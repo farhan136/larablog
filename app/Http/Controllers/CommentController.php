@@ -26,6 +26,10 @@ class CommentController extends Controller
             'module'=>$module,
             'title'=>$title
         );
+
+        if($comment->author != Auth::user()->id){
+            return redirect('landing/detail/'. $id)   ;
+        }
         return view('comment.form', $data);
     }
 
@@ -44,6 +48,8 @@ class CommentController extends Controller
         }else{
             $comment = Comment::find($id);
             $comment->content = $request->content;
+
+
             $comment->save();
         }
 
