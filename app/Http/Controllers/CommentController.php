@@ -12,10 +12,10 @@ class CommentController extends Controller
 
     public function form($id = '', $id2 = '', $module = '')
     {
-    	if($module == ''){
+    	if($id2 == ''){
     		$title = 'Create';
     	}else{
-    		$title = ucfirst($module);
+    		$title = 'Edit';
     	}
     	$post = Post::find($id);
         $comment = Comment::find($id2);
@@ -26,10 +26,12 @@ class CommentController extends Controller
             'module'=>$module,
             'title'=>$title
         );
-
-        if($comment->author != Auth::user()->id){
-            return redirect('landing/detail/'. $id)   ;
+        if($id2 != ''){
+            if($comment->author != Auth::user()->id){
+                return redirect('landing/detail/'. $id)   ;
+            }
         }
+        
         return view('comment.form', $data);
     }
 
